@@ -25,12 +25,12 @@ app.use(express.static('./public'));
 
 // REVIEW: Routes for requesting HTML resources
 
-// NOTE:Sending an AJAX request to the server and getting a response for the index.html page
+// NOTE:This .get method represents step 2 on the VCM pick, and is the "read" in CRUD. This is an AJAX request to the server to get information and send it to index.html.
 app.get('/', function(request, response) {
   response.sendFile('index.html', {root: '.'});
 });
 
-// NOTE:Sending an AJAX request to the server and getting a response for the new.html page
+// NOTE:This .get method represents step 2 on the VCM pick, and is the "read" in CRUD. This is an AJAX request to the server to get information and send it to new.html.
 app.get('/new', function(request, response) {
   response.sendFile('new.html', {root: '.'});
 });
@@ -49,7 +49,7 @@ app.get('/articles', function(request, response) {
   })
 });
 
-// NOTE:The user sends an AJAX request that uses the sql data to create a table using the article constructor function
+// NOTE:This is step 3 in the VCM pic, and represents the "create" in CRUD where the server queries the database and populates the table columns with data from the database with the template created below
 app.post('/articles', function(request, response) {
   client.query(
     `INSERT INTO
@@ -73,7 +73,7 @@ app.post('/articles', function(request, response) {
   });
 });
 
-// NOTE:
+// NOTE:This is step 3 in the VCM pic, and represents the "create" in CRUD where the server queries the database and populates the an individual element in the table with data from the database with the template created below.
 app.put('/articles/:id', function(request, response) {
   client.query(
     `UPDATE articles
@@ -99,7 +99,7 @@ app.put('/articles/:id', function(request, response) {
   });
 });
 
-// NOTE:
+// NOTE:  This method deletes a specific article in the database, takes place during the query stage and represents the D in CRUD.
 app.delete('/articles/:id', function(request, response) {
   client.query(
     `DELETE FROM articles WHERE article_id=$1;`,
@@ -113,7 +113,7 @@ app.delete('/articles/:id', function(request, response) {
   });
 });
 
-// NOTE:
+// NOTE: This method deletes all articles in the database, takes place during the query stage and represents the D in CRUD.
 app.delete('/articles', function(request, response) {
   client.query(
     'DELETE FROM articles;'
@@ -126,7 +126,7 @@ app.delete('/articles', function(request, response) {
   });
 });
 
-// NOTE:
+// NOTE:This calls the loadDB function, notes about which are below. This is called at this location because if there is no table, one needs to be created first.
 loadDB();
 
 app.listen(PORT, function() {
@@ -136,7 +136,7 @@ app.listen(PORT, function() {
 
 //////// ** DATABASE LOADER ** ////////
 ////////////////////////////////////////
-// NOTE:
+// NOTE: This function loads the data from the articles and inserts them into a table.  This represents steps 3 and 4 and represents the update stage of CRUD.  This function queries the articles in the Database, parses the data into rows starting at row zero.  It then reads the file data in the JSON file and parses it. The client can then insert new article elements into the table following the contructor template below.
 function loadArticles() {
   client.query('SELECT COUNT(*) FROM articles')
   .then(result => {
@@ -156,7 +156,7 @@ function loadArticles() {
   })
 }
 
-// NOTE:
+// NOTE: This is the funtions that creates a table if one does not exist, and is called earlier in the server.js file, then calls a function that loads the articles into the table.  It represents this can represent the C in crud if no table exists, or it can be the U in Crud to upload the articles into a table if one already exists. This is step 5 in the VCM.
 function loadDB() {
   client.query(`
     CREATE TABLE IF NOT EXISTS articles (
