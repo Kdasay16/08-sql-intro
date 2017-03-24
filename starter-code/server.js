@@ -25,12 +25,12 @@ app.use(express.static('./public'));
 
 // REVIEW: Routes for requesting HTML resources
 
-// NOTE:Sending an AJAX request to the server and getting a response for the index.html page
+// NOTE:This .get method represents step 2 on the VCM pick, and is the "read" in CRUD. This is an AJAX request to the server to get information and send it to index.html.
 app.get('/', function(request, response) {
   response.sendFile('index.html', {root: '.'});
 });
 
-// NOTE:Sending an AJAX request to the server and getting a response for the new.html page
+// NOTE:This .get method represents step 2 on the VCM pick, and is the "read" in CRUD. This is an AJAX request to the server to get information and send it to new.html.
 app.get('/new', function(request, response) {
   response.sendFile('new.html', {root: '.'});
 });
@@ -49,7 +49,7 @@ app.get('/articles', function(request, response) {
   })
 });
 
-// NOTE:The user sends an AJAX request that uses the sql data to create a table using the article constructor function
+// NOTE:This is step 3 in the VCM pic, and represents the "create" in CRUD where the server queries the database and populates the table columns with data from the database with the template created below
 app.post('/articles', function(request, response) {
   client.query(
     `INSERT INTO
@@ -73,7 +73,7 @@ app.post('/articles', function(request, response) {
   });
 });
 
-// NOTE:
+// NOTE:NOTE:This is step 3 in the VCM pic, and represents the "create" in CRUD where the server queries the database and populates the an individual element in the table with data from the database with the template created below
 app.put('/articles/:id', function(request, response) {
   client.query(
     `UPDATE articles
