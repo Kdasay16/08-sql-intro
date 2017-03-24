@@ -1,6 +1,5 @@
 'use strict';
 
-// TODO: Install and require the Node packages into your project, and ensure that it's now a new dependency in your package.json. DO NOT FORGET to run 'npm i'
 const pg = require('pg'); // 3rd party package
 const fs = require('fs'); // native Node
 const express = require('express'); // 3rd party package
@@ -10,11 +9,7 @@ const bodyParser = require('body-parser'); // 3rd party package
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// TODO: Complete the connection string for the url that will connect to your local postgres database
-// Windows and Linux users; You should have retained the user/pw from the pre-work for this course.
-// Your url may require that it's composed of additional information including user and password
-// const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
-const conString = 'postgres://localhost:5432';
+const conString = 'postgres://postgres:potatobabe@HOST:3000/kilovolt';
 
 // REVIEW: Pass the conString to pg, which creates a new client object
 const client = new pg.Client(conString);
@@ -28,15 +23,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('./public'));
 
-
 // REVIEW: Routes for requesting HTML resources
 
-// NOTE:
+// NOTE:Sending an AJAX request to the server and getting a response for the index.html page
 app.get('/', function(request, response) {
   response.sendFile('index.html', {root: '.'});
 });
 
-// NOTE:
+// NOTE:Sending an AJAX request to the server and getting a response for the new.html page
 app.get('/new', function(request, response) {
   response.sendFile('new.html', {root: '.'});
 });
@@ -55,7 +49,7 @@ app.get('/articles', function(request, response) {
   })
 });
 
-// NOTE:
+// NOTE:The user sends an AJAX request that uses the sql data to create a table using the article constructor function
 app.post('/articles', function(request, response) {
   client.query(
     `INSERT INTO
